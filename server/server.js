@@ -34,16 +34,17 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Event Management API is running' });
 });
 
-// Connect to DB and start server
+// Start server immediately
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+// Connect to DB in the background
 mongoose.connect(MONGODB_URI)
   .then(async () => {
     console.log('Connected to MongoDB successfully.');
     // Run DB pre-seeding
     await seedAdmin();
-    
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
   })
   .catch((err) => {
     console.error('Database connection failed:', err);
